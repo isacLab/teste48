@@ -1,0 +1,1423 @@
+﻿﻿﻿﻿{{#Globalization UserCultureName}}
+<document>
+    {{# Accreditations}}
+    {{#if HasInternalAnalysis}}
+    <subdocument>
+        <configuration>
+            <margins>
+                <left>15</left>
+                <right>15</right>
+                <bottom>5</bottom>
+                <top>5</top>
+            </margins>
+            <pagesize>
+                <width>210</width>
+                <height>297</height>
+            </pagesize>
+            <headerheight>30</headerheight>
+            <footerheight>18</footerheight>
+            <fitpagewidth>true</fitpagewidth>
+            <pageorientation>Portrait</pageorientation>
+        </configuration>
+        <headers>
+            <header>
+                <id>Default</id>
+                <htmlcontent>
+                    <html>
+                    <head>
+                        <style>
+                            * {
+                                font-size: 8px;
+                                font-weight: 400;
+                                font-family: Arial, sans-serif;
+                                color: #404040;
+                            }
+
+                            .laboratory-logo img {
+                                max-width: 170px !important;
+                                max-height: 80px !important;
+                            }
+
+                            .document-title {
+                                font-size: 14px;
+                                font-weight: 600;
+                                text-align: center;
+                                vertical-align: central;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td class="laboratory-logo" style="width: 30%;">{{>LaboratoryLogo}}</td>
+                                <td class="document-title" style="width: 40%;">
+                                    Relatório de Análises {{#with ../this}}{{ReportNumber}}{{/with}}{{#if IsAccredited}}.A{{/if}}
+                                    {{#with ../this}}
+                                    {{#if CommercialProposal}}
+                                    <span style="font-size: 12px; font-weight: 600px;">
+                                        <br />
+                                        <br />
+                                        Proposta Comercial: {{CommercialProposal.ControlNumber}}
+                                        {{/if}}
+                                        {{/with}}
+                                    </span>
+                                </td>
+                                <td style="width: 30%;" align="right">
+                                    {{#if IsAccredited}}
+                                    {{#if ImageBase64}}
+                                    <img style="max-width: 80px; max-height: 80px;" src="data:image/png;base64,{{ImageBase64}}" />
+                                    {{/if}}
+                                    {{/if}}
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                    </body>
+                </html>
+            </htmlcontent>
+        </header>
+    </headers>
+    <body>
+        <htmlcontent>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <style>
+                    * {
+                        font-size: 8px;
+                        font-family: Arial, sans-serif;
+                        color: #404040;
+                    }
+
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        border: 1px solid #C5C5C5;
+                    }
+
+                        table td, th {
+                            border: 1px solid #C5C5C5;
+                            padding: 3px;
+                        }
+
+                    .validation-hash {
+                        background-color: #E88320;
+                        border: 1px solid #E88320;
+                        color: black;
+                        text-align: center;
+                        font-size: 10px;
+                        font-weight: 400;
+                        padding: 3px;
+                    }
+
+                    .table-title {
+                        font-size: 10px;
+                        font-weight: 600;
+                        text-align: center;
+                        background-color: #E6E6E6;
+                    }
+
+                    .field-title {
+                        font-weight: 600;
+                    }
+
+                    .column-title {
+                        font-weight: 600;
+                        text-align: center;
+                    }
+
+                    .signature, .signature td {
+                        border: 0px;
+                        text-align: center;
+                        padding-top: 0px;
+                        padding-bottom: 0px;
+                    }
+
+                    sup {
+                        font-size: 6px;
+                    }
+
+                    sub {
+                        font-size: 6px;
+                    }
+
+                    .table-analyses-results tbody td {
+                        
+                    }
+
+                    .review, .review td {
+                        border: 0px;
+                        text-align: center;
+                        padding-top: 0px;
+                        padding-bottom: 0px;
+                    }
+                </style>
+            </head>
+            <body>
+                <section type="change-header" headerid="Default">
+                    <section type="change-footer" footerid="Default">
+                        {{#with ../this}}
+                        {{#if ReportNumber}}
+                        <p>
+                            <span class="field-title">Data de Publicação:</span>
+                            {{#if PublishDateTime}}
+                            {{ToLocalDateTime PublishDateTime "dd/MM/yyyy HH:mm"}}
+                            {{else}}
+                            -
+                            {{/if}}
+                        </p>
+                        {{/if}}
+                        {{/with}}
+
+                        {{#with ../this}}
+                        {{#if Account}}
+                        <table>
+                            <tr>
+                                <th class="table-title" colspan="2">Identificação Cliente</th>
+                            </tr>
+                            <tr>
+                                <td style="width: 70%;"><span class="field-title">Cliente: </span>{{Account.FullName}}</td>
+                                <td style="width: 30%;"><span class="field-title">CNPJ/CPF: </span>{{Account.Registry}}</td>
+                            </tr>
+                            {{#if Account.RelatedAccount}}
+                            <tr>
+                                <td style="width: 70%;">
+                                    <span class="field-title">Contato: </span>{{Account.RelatedAccount.Name}}
+                                </td>
+                                <td style="width: 30%;">
+                                    <span class="field-title">Telefone: </span>
+                                    {{#if Account.RelatedAccount.Phone}}
+                                    {{Account.RelatedAccount.Phone}}
+                                    {{else}}
+                                    {{#if Account.Phone}}
+                                    {{Account.Phone}}
+                                    {{else}}
+                                    -
+                                    {{/if}}
+                                    {{/if}}
+                                </td>
+                            </tr>
+                            {{/if}}
+                            <tr>
+                                <td style="width: 100%;" colspan="2">
+                                    <span class="field-title">Endereço: </span>
+                                    {{#if Account.Address}}
+                                    {{Account.Address.Address1}}
+                                    {{#if Account.Address.Address2}}{{Account.Address.Address2}}{{/if}}
+                                    {{#if Account.Address.District}} - {{Account.Address.District}}{{/if}}
+                                    {{#if Account.Address.Locality}} - {{Account.Address.Locality}}{{/if}}
+                                    {{#if Account.Address.State}} - {{Account.Address.State}}{{/if}}
+                                    {{#if Account.Address.PostalCode}} - CEP: {{Account.Address.PostalCode}}{{/if}}
+                                    {{#if Account.Address.Country}} - {{Account.Address.Country}}{{/if}}
+                                    {{/if}}
+                                </td>
+                            </tr>
+                        </table>
+                        {{/if}}
+                        {{/with}}
+
+                        {{#Samples}}
+                        {{#if HasInternalAnalysis}}
+                        <br />
+                        <table>
+                            <tr>
+                                <th class="table-title" colspan="2">
+                                    N&#186; Amostra: {{ControlNumber}}
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%;" colspan="1">
+                                    <span class="field-title">Tipo de Amostra: </span>{{SampleType}}
+                                </td>
+                                <td style="width: 50%;" colspan="1">
+                                    <span class="field-title">Ponto de Coleta: </span>{{Identification}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%;">
+                                    <span class="field-title">Data Coleta: </span>
+                                    {{ToLocalDateTime TakenDateTime "dd/MM/yyyy HH:mm"}}
+                                </td>
+                                <td style="width: 50%;">
+                                    <span class="field-title">Data Recebimento: </span>
+                                    {{ToLocalDateTime ReceiveDateTime "dd/MM/yyyy HH:mm"}}
+                                </td>
+                            </tr>
+                            {{#Infos}}
+                            <tr>
+                                <td style="width: 50%;">
+                                    {{#if Item1}}
+                                    <span class="field-title">{{Item1.Identification}}: </span>
+                                    {{#if Item1.ValueDateTime}}
+                                    {{ToLocalDateTime Item1.ValueDateTime "dd/MM/yyyy HH:mm"}}
+                                    {{else}}
+                                    {{Item1.DisplayValue}}{{Item1.Unit}}
+                                    {{/if}}
+                                    {{/if}}
+                                </td>
+                                <td style="width: 50%;">
+                                    {{#if Item2}}
+                                    <span class="field-title">{{Item2.Identification}}: </span>
+                                    {{#if Item2.ValueDateTime}}
+                                    {{ToLocalDateTime Item2.ValueDateTime "dd/MM/yyyy HH:mm"}}
+                                    {{else}}
+                                    {{Item2.DisplayValue}}{{Item2.Unit}}
+                                    {{/if}}
+                                    {{/if}}
+                                </td>
+                            </tr>
+                            {{/Infos}}
+                        </table>
+                        <br />
+
+                        <table>
+                            {{#unless ../IsAccredited}}
+                            <tr>
+                                <th class="table-title">Os ensaios a seguir não fazem parte do escopo de acreditação deste laboratório</th>
+                            </tr>
+                            {{/unless}}
+                            <tr>
+                                <th class="table-title">Resultados Analíticos</th>
+                            </tr>
+                        </table>
+
+                        {{#AnalysesGroups}}
+                        <br />
+                        <table class="table-analyses-results">
+                            <thead>
+                                <tr>
+                                    <th class="table-title" colspan="9">
+                                        {{#if Identification}}{{Identification}}{{else}}-{{/if}}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th class="column-title" style="width: 22%;">Análise</th>
+                                    <th class="column-title" style="width: 10%;">Resultado</th>
+                                    <th class="column-title" style="width: 5%;">Unidade</th>
+                                    {{#if Specification1}}
+                                    <th class="column-title" style="width: 10%;">{{{Specification1.Identification}}}</th>
+                                    {{/if}}
+                                    {{#if Specification2}}
+                                    <th class="column-title" style="width: 10%;">{{{Specification2.Identification}}}</th>
+                                    {{/if}}
+                                    {{#if Specification3}}
+                                    <th class="column-title" style="width: 10%;">{{{Specification3.Identification}}}</th>
+                                    {{/if}}
+                                    <th class="column-title" style="width: 10%;">LQ</th>
+                                    <th class="column-title" style="width: 15%;">Referência</th>
+                                    <th class="column-title" style="width: 10%;">Data Análise</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#Analyses}}
+                                {{#unless Surrogate}}
+                                <tr>
+                                    <td style="text-align: center">{{{Identification}}}{{#if Method.ServiceCenter.IsThird}}*{{/if}}</td>
+                                    <td style="text-align: center">{{{Result}}}</td>
+                                    <td style="text-align: center">{{#if Unit}}{{{Unit}}}{{else}}-{{/if}}</td>
+                                    {{#if ../Specification1}}
+                                    <td style="text-align: center">{{#if Specification1Limit}}{{{Specification1Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                    {{#if ../Specification2}}
+                                    <td style="text-align: center">{{#if Specification2Limit}}{{{Specification2Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                    {{#if ../Specification3}}
+                                    <td style="text-align: center">{{#if Specification3Limit}}{{{Specification3Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                    <td style="text-align: center">{{#if QuantificationLimit}}{{QuantificationLimit}}{{#if Info01}} - {{Info01}}{{/if}}{{else}}-{{/if}}</td>
+                                    <td style="text-align: center">{{#if Method}}{{#if ReferenceMethod}}{{{ReferenceMethod}}}{{else}}-{{/if}}{{/if}}</td>
+                                    <td style="text-align: center">{{#if Method}}{{#if Method.AnalyzeDateTime}}{{ToLocalDateTime Method.AnalyzeDateTime "dd/MM/yyyy"}}{{else}}-{{/if}}{{/if}}</td>
+                                </tr>
+                                {{/unless}}
+                                {{/Analyses}}
+                            </tbody>
+                        </table>
+                        {{/AnalysesGroups}}
+
+                        {{#MethodTypes}}
+                        <br />
+                        <table class="table-analyses-results">
+                            <thead>
+                                <tr>
+                                    <th class="table-title" colspan="9">
+                                        {{#if Identification}}{{Identification}}{{else}}-{{/if}}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th class="column-title" style="width: 22%;">Análise</th>
+                                    <th class="column-title" style="width: 10%;">Resultado</th>
+                                    <th class="column-title" style="width: 5%;">Unidade</th>
+                                    {{#if Specification1}}
+                                    <th class="column-title" style="width: 10%;">{{{Specification1.Identification}}}</th>
+                                    {{/if}}
+                                    {{#if Specification2}}
+                                    <th class="column-title" style="width: 10%;">{{{Specification2.Identification}}}</th>
+                                    {{/if}}
+                                    {{#if Specification3}}
+                                    <th class="column-title" style="width: 10%;">{{{Specification3.Identification}}}</th>
+                                    {{/if}}
+                                    <th class="column-title" style="width: 10%;">LQ</th>
+                                    <th class="column-title" style="width: 15%;">Referência</th>
+                                    <th class="column-title" style="width: 10%;">Data Análise</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#Analyses}}
+                                {{#unless Surrogate}}
+                                <tr>
+                                    <td style="text-align: center">{{{Identification}}}{{#if Method.ServiceCenter.IsThird}}*{{/if}}</td>
+                                    <td style="text-align: center">{{{Result}}}</td>
+                                    <td style="text-align: center">{{#if Unit}}{{{Unit}}}{{else}}-{{/if}}</td>
+                                    {{#if ../Specification1}}
+                                    <td style="text-align: center">{{#if Specification1Limit}}{{{Specification1Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                    {{#if ../Specification2}}
+                                    <td style="text-align: center">{{#if Specification2Limit}}{{{Specification2Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                    {{#if ../Specification3}}
+                                    <td style="text-align: center">{{#if Specification3Limit}}{{{Specification3Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                    <td style="text-align: center">{{#if QuantificationLimit}}{{QuantificationLimit}}{{#if Info01}} - {{Info01}}{{/if}}{{else}}-{{/if}}</td>
+                                    <td style="text-align: center">{{#if Method}}{{#if ReferenceMethod}}{{{ReferenceMethod}}}{{else}}-{{/if}}{{/if}}</td>
+                                    <td style="text-align: center">{{#if Method}}{{#if Method.AnalyzeDateTime}}{{ToLocalDateTime Method.AnalyzeDateTime "dd/MM/yyyy"}}{{else}}-{{/if}}{{/if}}</td>
+                                </tr>
+                                {{/unless}}
+                                {{/Analyses}}
+                            </tbody>
+                        </table>
+                        {{/MethodTypes}}
+
+                        {{#ServiceAreas}}
+                        <br />
+                        <table class="table-analyses-results">
+                            <thead>
+                                <tr>
+                                    <th class="table-title" colspan="9">{{#if Identification}}{{Identification}}{{else}}-{{/if}}{{#if IsThird}}*{{/if}}</th>
+                                </tr>
+                                <tr>
+                                    <th class="column-title" style="width: 22%;">Análise</th>
+                                    <th class="column-title" style="width: 10%;">Resultado</th>
+                                    <th class="column-title" style="width: 5%;">Unidade</th>
+                                    {{#if Specification1}}
+                                    <th class="column-title" style="width: 10%;">{{{Specification1.Identification}}}</th>
+                                    {{/if}}
+                                    {{#if Specification2}}
+                                    <th class="column-title" style="width: 10%;">{{{Specification2.Identification}}}</th>
+                                    {{/if}}
+                                    {{#if Specification3}}
+                                    <th class="column-title" style="width: 10%;">{{{Specification3.Identification}}}</th>
+                                    {{/if}}
+                                    <th class="column-title" style="width: 10%;">LQ</th>
+                                    <th class="column-title" style="width: 15%;">Referência</th>
+                                    <th class="column-title" style="width: 10%;">Data Análise</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#Analyses}}
+                                {{#unless Surrogate}}
+                                <tr>
+                                    <td style="text-align: center">{{{Identification}}}</td>
+                                    <td style="text-align: center">{{{Result}}}</td>
+                                    <td style="text-align: center">{{#if Unit}}{{{Unit}}}{{else}}-{{/if}}</td>
+                                    {{#if ../Specification1}}
+                                    <td style="text-align: center">{{#if Specification1Limit}}{{{Specification1Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                    {{#if ../Specification2}}
+                                    <td style="text-align: center">{{#if Specification2Limit}}{{{Specification2Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                    {{#if ../Specification3}}
+                                    <td style="text-align: center">{{#if Specification3Limit}}{{{Specification3Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                    <td style="text-align: center">{{#if QuantificationLimit}}{{QuantificationLimit}}{{#if Info01}} - {{Info01}}{{/if}}{{else}}-{{/if}}</td>
+                                    <td style="text-align: center">{{#if Method}}{{#if ReferenceMethod}}{{{ReferenceMethod}}}{{else}}-{{/if}}{{/if}}</td>
+                                    <td style="text-align: center">{{#if Method}}{{#if Method.AnalyzeDateTime}}{{ToLocalDateTime Method.AnalyzeDateTime "dd/MM/yyyy"}}{{else}}-{{/if}}{{/if}}</td>
+                                </tr>
+                                {{/unless}}
+                                {{/Analyses}}
+                            </tbody>
+                        </table>
+                        {{/ServiceAreas}}
+
+                        {{#Generals}}
+                        <br />
+                        <table class="table-analyses-results">
+                            <thead>
+                                <tr>
+                                    <th class="column-title" style="width: 22%;">Análise</th>
+                                    <th class="column-title" style="width: 10%;">Resultado</th>
+                                    <th class="column-title" style="width: 5%;">Unidade</th>
+                                    {{#if Specification1}}
+                                    <th class="column-title" style="width: 10%;">{{{Specification1.Identification}}}</th>
+                                    {{/if}}
+                                    {{#if Specification2}}
+                                    <th class="column-title" style="width: 10%;">{{{Specification2.Identification}}}</th>
+                                    {{/if}}
+                                    {{#if Specification3}}
+                                    <th class="column-title" style="width: 10%;">{{{Specification3.Identification}}}</th>
+                                    {{/if}}
+                                    <th class="column-title" style="width: 10%;">LQ</th>
+                                    <th class="column-title" style="width: 15%;">Referência</th>
+                                    <th class="column-title" style="width: 10%;">Data Análise</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#Analyses}}
+                                {{#unless Surrogate}}
+                                <tr>
+                                    <td style="text-align: center">{{{Identification}}}{{#if Method.ServiceCenter.IsThird}}*{{/if}}</td>
+                                    <td style="text-align: center">{{{Result}}}</td>
+                                    <td style="text-align: center">{{#if Unit}}{{{Unit}}}{{else}}-{{/if}}</td>
+                                    {{#if ../Specification1}}
+                                    <td style="text-align: center">{{#if Specification1Limit}}{{{Specification1Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                    {{#if ../Specification2}}
+                                    <td style="text-align: center">{{#if Specification2Limit}}{{{Specification2Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                    {{#if ../Specification3}}
+                                    <td style="text-align: center">{{#if Specification3Limit}}{{{Specification3Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                    <td style="text-align: center">{{#if QuantificationLimit}}{{QuantificationLimit}}{{#if Info01}} - {{Info01}}{{/if}}{{else}}-{{/if}}</td>
+                                    <td style="text-align: center">{{#if Method}}{{#if ReferenceMethod}}{{{ReferenceMethod}}}{{else}}-{{/if}}{{/if}}</td>
+                                    <td style="text-align: center">{{#if Method}}{{#if Method.AnalyzeDateTime}}{{ToLocalDateTime Method.AnalyzeDateTime "dd/MM/yyyy"}}{{else}}-{{/if}}{{/if}}</td>
+                                </tr>
+                                {{/unless}}
+                                {{/Analyses}}
+                            </tbody>
+                        </table>
+                        {{/Generals}}
+                        {{/if}}
+                        {{/Samples}}
+
+                        {{#if ControlsSamplesList}}
+                        <br />
+                        <table>
+                            <tr>
+                                <th class="table-title">Controle de Qualidade</th>
+                            </tr>
+                        </table>
+
+                        {{#ControlsSamplesList}}
+                        <br />
+                        <table class="table-analyses-results">
+                            <thead>
+                                <tr>
+                                    <th class="table-title" colspan="4">
+                                        {{{Identification}}}{{ControlNumber}}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th class="column-title">Parâmetros</th>
+                                    <th class="column-title">Resultado</th>
+                                    <th class="column-title">Unidade</th>
+                                    <th class="column-title">Limite</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#ControlSampleDetails}}
+                                {{#unless Surrogate}}
+                                <tr>
+                                    <td style="text-align: center">{{Identification}}</td>
+                                    <td style="text-align: center">{{DisplayValue}}</td>
+                                    <td style="text-align: center">{{#if Unit}}{{{Unit}}}{{else}}-{{/if}}</td>
+                                    <td style="text-align: center">{{LQ}}</td>
+                                </tr>
+                                {{/unless}}
+                                {{/ControlSampleDetails}}
+                            </tbody>
+                        </table>
+                        {{/ControlsSamplesList}}
+                        {{/if}}
+
+                        {{#if HasSurrogatesAnalysis}}
+                        <br />
+                        <table>
+                            <tr>
+                                <th class="table-title">Surrogates</th>
+                            </tr>
+                        </table>
+
+                        {{#SurrogatesList}}
+                        {{#if AnalysisSurrogates}}
+                        <br />
+                        <table class="table-analyses-results">
+                            <thead>
+                                <tr>
+                                    <th class="table-title" colspan="4">
+                                        {{{SampleIdentification}}}{{SampleControlNumber}}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <th class="column-title">Parâmetros</th>
+                                    <th class="column-title">Resultado</th>
+                                    <th class="column-title">Unidade</th>
+                                    <th class="column-title">Limite</th>
+                                </tr>
+                            </thead>
+                            {{#AnalysisSurrogates}}
+                            <tbody>
+                                <tr>
+                                    <td style="text-align: center">{{Identification}}</td>
+                                    <td style="text-align: center">{{DisplayValue}}</td>
+                                    <td style="text-align: center">{{#if Unit}}{{{Unit}}}{{else}}-{{/if}}</td>
+                                    <td style="text-align: center">{{LQ}}</td>
+                                </tr>
+                            <tbody>
+                                {{/AnalysisSurrogates}}
+                        </table>
+                        {{/if}}
+                        {{/SurrogatesList}}
+                        {{/if}}
+
+                        {{#if Specifications}}
+                        <br />
+                        <table>
+                            <tr>
+                                <th class="table-title">
+                                    Especificações
+                                </th>
+                            </tr>
+                            {{#Specifications}}
+                            <tr>
+                                <td><span class="field-title">{{{Identification}}}:</span> {{{Description}}}</td>
+                            </tr>
+                            {{/Specifications}}
+                        </table>
+                        {{/if}}
+
+
+                        {{#if ConclusionMessages}}
+                        <br />
+                        <table>
+                            <tr>
+                                <th class="table-title">
+                                    As opiniões e interpretações expressas abaixo não fazem parte do escopo da acreditação deste laboratório
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="table-title">
+                                    Interpretações
+                                </th>
+                            </tr>
+                            {{#ConclusionMessages}}
+                            <tr>
+                                <td>{{{MessageHtml}}}</td>
+                            </tr>
+                            {{/ConclusionMessages}}
+                        </table>
+                        {{/if}}
+
+                        <br />
+                        <table style="">
+                            <tr>
+                                <th class="table-title">
+                                    Notas
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{>AnalysesReportNotes}}
+                                </td>
+                            </tr>
+                        </table>
+                      
+                        {{#if AttachmentMessages}}
+                        {{#AttachmentMessages}}
+                        <br />
+                        <table>
+                            <tr>
+                                <th class="table-title">
+                                    {{Subject}}
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>{{{MessageHtml}}}</td>
+                            </tr>
+                        </table>
+                        {{/AttachmentMessages}}
+                        {{/if}}
+
+                        {{#with ../this}}
+                        <br />
+                        <table class="signature" style="">
+                            <tr>
+                                <td style="width: 50%;">
+                                    {{#if PublisherUser}}
+                                    {{#if PublisherUser.SignatureBase64Image}}
+                                    <img style="max-width: 160px; max-height: 50px;" src="data:image/png;base64,{{PublisherUser.SignatureBase64Image}}">
+                                    {{/if}}
+                                    {{/if}}
+                                </td>
+                                <td style="width: 50%;">
+                                    {{#if TechnicalUser}}
+                                    {{#if TechnicalUser.SignatureBase64Image}}
+                                    <img style="max-width: 160px; max-height: 50px;" src="data:image/png;base64,{{TechnicalUser.SignatureBase64Image}}">
+                                    {{/if}}
+                                    {{/if}}
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <td style="width: 50%; font-weight: 600;">{{#if PublisherUser}}{{PublisherUser.Identification}}{{/if}}</td>
+                                <td style="width: 50%; font-weight: 600;">{{#if TechnicalUser}}{{TechnicalUser.Identification}}{{/if}}</td>
+                            </tr>
+                            <tr align="center">
+                                <td style="width: 50%;">
+                                    {{#if PublisherUser}}
+                                    {{>ResponsiblePublicationNote}}
+                                    {{/if}}
+                                </td>
+                                <td style="width: 50%;">
+                                    {{#if TechnicalUser}}
+                                    {{>ResponsibleTechnicianNote}}
+                                    {{/if}}
+                                </td>
+                            </tr>
+                        </table>
+                        {{/with}}
+
+                        <br />
+                        <table class="validation-hash" style=" width: 100%;">
+                            <tr align="center">
+                                <td colspan="2" class="validation-hash">
+                                    <span style="color:#000; font-weight:600; font-size:10px;">Chave de Validação: </span>{{#with ../this}}{{Hash}}{{/with}}
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                        <table class="review" style="width: 100%; border:0px;">
+                            <tr>
+                                <td style="width: 100%">
+                                    {{#with ../this}}
+                                    {{#if IsReviewed}}
+                                    <span style="font-size: 8px;">
+                                        Este relatório de análises cancela e subtitui o relatório {{ReportNumberReplacedRevision}}{{#if IsAccredited}}.A{{/if}}
+                                    </span>
+                                    {{/if}}
+                                    {{/with}}
+                                </td>
+                            </tr>
+                        </table>
+                    </section>
+                </section>
+            </body>
+        </html>
+    </htmlcontent>
+</body>
+<footers>
+    <footer>
+        <id>Default</id>
+        <htmlcontent>
+            <div style="font-family: sans-serif;" align="center">
+                <footer>
+                    <table style="width: 100%; font-size: 8px; border-top: 1px solid #000000;">
+                        <tr>
+                            <td style="width: 15%;">{{>AnalysesReportFooter}}</td>
+                            <td style="width: 70%; text-align: center;">{{>LaboratoryAddress}}</td>
+                            <td style="width: 15%;" align="right">Pag.{CrtPage}/{PageCount}</td>
+                        </tr>
+                    </table>
+                </footer>
+            </div>
+        </htmlcontent>
+    </footer>
+</footers>
+</subdocument>
+{{/if}}
+{{/Accreditations}}
+{{#if HasOutSourcedAnalysis}}
+<subdocument>
+    <configuration>
+        <margins>
+            <left>15</left>
+            <right>15</right>
+            <bottom>5</bottom>
+            <top>5</top>
+        </margins>
+        <pagesize>
+            <width>210</width>
+            <height>297</height>
+        </pagesize>
+        <headerheight>30</headerheight>
+        <footerheight>18</footerheight>
+        <fitpagewidth>true</fitpagewidth>
+        <pageorientation>Portrait</pageorientation>
+    </configuration>
+    <headers>
+        <header>
+            <id>Default</id>
+            <htmlcontent>
+                <html>
+                <head>
+                    <style>
+                        * {
+                            font-size: 8px;
+                            font-weight: 400;
+                            font-family: Arial, sans-serif;
+                            color: #404040;
+                        }
+
+                        .laboratory-logo img {
+                            max-width: 170px !important;
+                            max-height: 80px !important;
+                        }
+
+                        .document-title {
+                            font-size: 14px;
+                            font-weight: 600;
+                            text-align: center;
+                            vertical-align: central;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <table style="width: 100%;">
+                        <tr>
+                            <td class="laboratory-logo" style="width: 30%;">{{>LaboratoryLogo}}</td>
+                            <td class="document-title" style="width: 40%;">
+                                Relatório de Análises {{ReportNumber}}
+                                {{#if CommercialProposal}}
+                                <span style="font-size: 12px; font-weight: 600px;">
+                                    <br />
+                                    <br />
+                                    Proposta Comercial: {{CommercialProposal.ControlNumber}}
+                                    {{/if}}
+                                </span>
+                            </td>
+                            <td style="width: 30%;" align="right"></td>
+                        </tr>
+                    </table>
+                    <br />
+                </body>
+            </html>
+        </htmlcontent>
+    </header>
+</headers>
+<body>
+    <htmlcontent>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <style>
+                * {
+                    font-size: 8px;
+                    font-family: Arial, sans-serif;
+                    color: #404040;
+                }
+
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    border: 1px solid #C5C5C5;
+                }
+
+                    table td, th {
+                        border: 1px solid #C5C5C5;
+                        padding: 3px;
+                    }
+
+                .validation-hash {
+                    background-color: #E88320;
+                    border: 1px solid #E88320;
+                    color: black;
+                    text-align: center;
+                    font-size: 10px;
+                    font-weight: 400;
+                    padding: 3px;
+                }
+
+                .table-title {
+                    font-size: 10px;
+                    font-weight: 600;
+                    text-align: center;
+                    background-color: #E6E6E6;
+                }
+
+                .field-title {
+                    font-weight: 600;
+                }
+
+                .column-title {
+                    font-weight: 600;
+                    text-align: center;
+                }
+
+                .signature, .signature td {
+                    border: 0px;
+                    text-align: center;
+                    padding-top: 0px;
+                    padding-bottom: 0px;
+                }
+
+                sup {
+                    font-size: 6px;
+                }
+
+                sub {
+                    font-size: 6px;
+                }
+
+                .table-analyses-results tbody td {
+                    
+                }
+
+                .review, .review td {
+                    border: 0px;
+                    text-align: center;
+                    padding-top: 0px;
+                    padding-bottom: 0px;
+                }
+            </style>
+        </head>
+        <body>
+            <section type="change-header" headerid="Default">
+                <section type="change-footer" footerid="Default">
+                    {{#if ReportNumber}}
+                    <p>
+                        <span class="field-title">Data de Publicação:</span>
+                        {{#if PublishDateTime}}
+                        {{ToLocalDateTime PublishDateTime "dd/MM/yyyy HH:mm"}}
+                        {{else}}
+                        -
+                        {{/if}}
+                    </p>
+                    {{/if}}
+                    {{#if Account}}
+                    <table>
+                        <tr>
+                            <th class="table-title" colspan="2">Identificação Cliente</th>
+                        </tr>
+                        <tr>
+                            <td style="width: 70%;"><span class="field-title">Cliente: </span>{{Account.FullName}}</td>
+                            <td style="width: 30%;"><span class="field-title">CNPJ/CPF: </span>{{Account.Registry}}</td>
+                        </tr>
+                        {{#if Account.RelatedAccount}}
+                        <tr>
+                            <td style="width: 70%;">
+                                <span class="field-title">Contato: </span>{{Account.RelatedAccount.Name}}
+                            </td>
+                            <td style="width: 30%;">
+                                <span class="field-title">Telefone: </span>
+                                {{#if Account.RelatedAccount.Phone}}
+                                {{Account.RelatedAccount.Phone}}
+                                {{else}}
+                                {{#if Account.Phone}}
+                                {{Account.Phone}}
+                                {{else}}
+                                -
+                                {{/if}}
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/if}}
+                        <tr>
+                            <td style="width: 100%;" colspan="2">
+                                <span class="field-title">Endereço: </span>
+                                {{#if Account.Address}}
+                                {{Account.Address.Address1}}
+                                {{#if Account.Address.Address2}}{{Account.Address.Address2}}{{/if}}
+                                {{#if Account.Address.District}} - {{Account.Address.District}}{{/if}}
+                                {{#if Account.Address.Locality}} - {{Account.Address.Locality}}{{/if}}
+                                {{#if Account.Address.State}} - {{Account.Address.State}}{{/if}}
+                                {{#if Account.Address.PostalCode}} - CEP: {{Account.Address.PostalCode}}{{/if}}
+                                {{#if Account.Address.Country}} - {{Account.Address.Country}}{{/if}}
+                                {{/if}}
+                            </td>
+                        </tr>
+                    </table>
+                    {{#Accreditations}}
+                    {{#if HasOutsourcedAnalysis}}
+                    {{#Samples}}
+                    
+                    <br />
+                    <table>
+                        <tr>
+                            <th class="table-title" colspan="2">
+                                N&#186; Amostra: {{ControlNumber}}
+                            </th>
+                        </tr>
+                        <tr>
+                            <td style="width: 50%;" colspan="1">
+                                <span class="field-title">Tipo de Amostra: </span>{{SampleType}}
+                            </td>
+                            <td style="width: 50%;" colspan="1">
+                                <span class="field-title">Ponto de Coleta: </span>{{Identification}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 50%;">
+                                <span class="field-title">Data Coleta: </span>
+                                {{ToLocalDateTime TakenDateTime "dd/MM/yyyy HH:mm"}}
+                            </td>
+                            <td style="width: 50%;">
+                                <span class="field-title">Data Recebimento: </span>
+                                {{ToLocalDateTime ReceiveDateTime "dd/MM/yyyy HH:mm"}}
+                            </td>
+                        </tr>
+                        {{#Infos}}
+                        <tr>
+                            <td style="width: 50%;">
+                                {{#if Item1}}
+                                <span class="field-title">{{Item1.Identification}}: </span>
+                                {{#if Item1.ValueDateTime}}
+                                {{ToLocalDateTime Item1.ValueDateTime "dd/MM/yyyy HH:mm"}}
+                                {{else}}
+                                {{Item1.DisplayValue}}{{Item1.Unit}}
+                                {{/if}}
+                                {{/if}}
+                            </td>
+                            <td style="width: 50%;">
+                                {{#if Item2}}
+                                <span class="field-title">{{Item2.Identification}}: </span>
+                                {{#if Item2.ValueDateTime}}
+                                {{ToLocalDateTime Item2.ValueDateTime "dd/MM/yyyy HH:mm"}}
+                                {{else}}
+                                {{Item2.DisplayValue}}{{Item2.Unit}}
+                                {{/if}}
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/Infos}}
+                    </table>
+                    <br />
+
+                    <table>
+                        <tr>
+                            <th class="table-title">Resultados Analíticos</th>
+                        </tr>
+                    </table>
+
+
+                    {{#if AnalysesGroupsThird}}
+                    {{#AnalysesGroupsThird}}
+                    <br />
+                    <table class="table-analyses-results">
+                        <thead>
+                            <tr>
+                                <th class="table-title" colspan="9">
+                                    {{#if Identification}}Ensaios realizados em provedor externo - {{Identification}}{{else}}-{{/if}}
+                                    {{#if Accreditation}} - {{Accreditation}}{{/if}}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="column-title" style="width: 22%;">Análise</th>
+                                <th class="column-title" style="width: 10%;">Resultado</th>
+                                <th class="column-title" style="width: 5%;">Unidade</th>
+                                {{#if Specification1}}
+                                <th class="column-title" style="width: 10%;">{{{Specification1.Identification}}}</th>
+                                {{/if}}
+                                {{#if Specification2}}
+                                <th class="column-title" style="width: 10%;">{{{Specification2.Identification}}}</th>
+                                {{/if}}
+                                {{#if Specification3}}
+                                <th class="column-title" style="width: 10%;">{{{Specification3.Identification}}}</th>
+                                {{/if}}
+                                <th class="column-title" style="width: 10%;">LQ</th>
+                                <th class="column-title" style="width: 15%;">Referência</th>
+                                <th class="column-title" style="width: 10%;">Data Análise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#Analyses}}
+                            {{#unless Surrogate}}
+                            <tr>
+                                <td style="text-align: center">{{{Identification}}}</td>
+                                <td style="text-align: center">{{{Result}}}</td>
+                                <td style="text-align: center">{{#if Unit}}{{{Unit}}}{{else}}-{{/if}}</td>
+                                {{#if ../Specification1}}
+                                <td style="text-align: center">{{#if Specification1Limit}}{{{Specification1Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                {{#if ../Specification2}}
+                                <td style="text-align: center">{{#if Specification2Limit}}{{{Specification2Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                {{#if ../Specification3}}
+                                <td style="text-align: center">{{#if Specification3Limit}}{{{Specification3Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                <td style="text-align: center">{{#if QuantificationLimit}}{{QuantificationLimit}}{{#if Info01}} - {{Info01}}{{/if}}{{else}}-{{/if}}</td>
+                                <td style="text-align: center">{{#if Method}}{{#if ReferenceMethod}}{{{ReferenceMethod}}}{{else}}-{{/if}}{{/if}}</td>
+                                <td style="text-align: center">{{#if Method}}{{#if Method.AnalyzeDateTime}}{{ToLocalDateTime Method.AnalyzeDateTime "dd/MM/yyyy"}}{{else}}-{{/if}}{{/if}}</td>
+                            </tr>
+                            {{/unless}}
+                            {{/Analyses}}
+                        </tbody>
+                    </table>
+                    {{/AnalysesGroupsThird}}
+                    {{/if}}
+
+                    {{#if MethodTypesThird}}
+                    {{#MethodTypesThird}}
+                    <br />
+                    <table class="table-analyses-results">
+                        <thead>
+                            <tr>
+                                <th class="table-title" colspan="9">
+                                    {{#if Identification}}Ensaios realizados em provedor externo - {{Identification}}{{else}}-{{/if}}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="column-title" style="width: 22%;">Análise</th>
+                                <th class="column-title" style="width: 10%;">Resultado</th>
+                                <th class="column-title" style="width: 5%;">Unidade</th>
+                                {{#if Specification1}}
+                                <th class="column-title" style="width: 10%;">{{{Specification1.Identification}}}</th>
+                                {{/if}}
+                                {{#if Specification2}}
+                                <th class="column-title" style="width: 10%;">{{{Specification2.Identification}}}</th>
+                                {{/if}}
+                                {{#if Specification3}}
+                                <th class="column-title" style="width: 10%;">{{{Specification3.Identification}}}</th>
+                                {{/if}}
+                                <th class="column-title" style="width: 10%;">LQ</th>
+                                <th class="column-title" style="width: 15%;">Referência</th>
+                                <th class="column-title" style="width: 10%;">Data Análise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#Analyses}}
+                            {{#unless Surrogate}}
+                            <tr>
+                                <td style="text-align: center">{{{Identification}}}</td>
+                                <td style="text-align: center">{{{Result}}}</td>
+                                <td style="text-align: center">{{#if Unit}}{{{Unit}}}{{else}}-{{/if}}</td>
+                                {{#if ../Specification1}}
+                                <td style="text-align: center">{{#if Specification1Limit}}{{{Specification1Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                {{#if ../Specification2}}
+                                <td style="text-align: center">{{#if Specification2Limit}}{{{Specification2Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                {{#if ../Specification3}}
+                                <td style="text-align: center">{{#if Specification3Limit}}{{{Specification3Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                <td style="text-align: center">{{#if QuantificationLimit}}{{QuantificationLimit}}{{#if Info01}} - {{Info01}}{{/if}}{{else}}-{{/if}}</td>
+                                <td style="text-align: center">{{#if Method}}{{#if ReferenceMethod}}{{{ReferenceMethod}}}{{else}}-{{/if}}{{/if}}</td>
+                                <td style="text-align: center">{{#if Method}}{{#if Method.AnalyzeDateTime}}{{ToLocalDateTime Method.AnalyzeDateTime "dd/MM/yyyy"}}{{else}}-{{/if}}{{/if}}</td>
+                            </tr>
+                            {{/unless}}
+                            {{/Analyses}}
+                        </tbody>
+                    </table>
+                    {{/MethodTypesThird}}
+                    {{/if}}
+
+                    {{#if ServiceAreasThird}}
+                    {{#ServiceAreasThird}}
+                    <br />
+                    <table class="table-analyses-results">
+                        <thead>
+                            <tr>
+                                <th class="table-title" colspan="9">
+                                    {{#if Identification}}Ensaios realizados em provedor externo - {{Identification}}{{else}}-{{/if}}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="column-title" style="width: 22%;">Análise</th>
+                                <th class="column-title" style="width: 10%;">Resultado</th>
+                                <th class="column-title" style="width: 5%;">Unidade</th>
+                                {{#if Specification1}}
+                                <th class="column-title" style="width: 10%;">{{{Specification1.Identification}}}</th>
+                                {{/if}}
+                                {{#if Specification2}}
+                                <th class="column-title" style="width: 10%;">{{{Specification2.Identification}}}</th>
+                                {{/if}}
+                                {{#if Specification3}}
+                                <th class="column-title" style="width: 10%;">{{{Specification3.Identification}}}</th>
+                                {{/if}}
+                                <th class="column-title" style="width: 10%;">LQ</th>
+                                <th class="column-title" style="width: 15%;">Referência</th>
+                                <th class="column-title" style="width: 10%;">Data Análise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#Analyses}}
+                            {{#unless Surrogate}}
+                            <tr>
+                                <td style="text-align: center">{{{Identification}}}</td>
+                                <td style="text-align: center">{{{Result}}}</td>
+                                <td style="text-align: center">{{#if Unit}}{{{Unit}}}{{else}}-{{/if}}</td>
+                                {{#if ../Specification1}}
+                                <td style="text-align: center">{{#if Specification1Limit}}{{{Specification1Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                {{#if ../Specification2}}
+                                <td style="text-align: center">{{#if Specification2Limit}}{{{Specification2Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                {{#if ../Specification3}}
+                                <td style="text-align: center">{{#if Specification3Limit}}{{{Specification3Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                <td style="text-align: center">{{#if QuantificationLimit}}{{QuantificationLimit}}{{#if Info01}} - {{Info01}}{{/if}}{{else}}-{{/if}}</td>
+                                <td style="text-align: center">{{#if Method}}{{#if ReferenceMethod}}{{{ReferenceMethod}}}{{else}}-{{/if}}{{/if}}</td>
+                                <td style="text-align: center">{{#if Method}}{{#if Method.AnalyzeDateTime}}{{ToLocalDateTime Method.AnalyzeDateTime "dd/MM/yyyy"}}{{else}}-{{/if}}{{/if}}</td>
+                            </tr>
+                            {{/unless}}
+                            {{/Analyses}}
+                        </tbody>
+                    </table>
+                    {{/ServiceAreasThird}}
+                    {{/if}}
+
+                    {{#if GeneralsThird}}
+                    {{#GeneralsThird}}
+                    <br />
+                    <table class="table-analyses-results">
+                        <thead>
+                            <tr>
+                                <th class="column-title" style="width: 22%;">Análise</th>
+                                <th class="column-title" style="width: 10%;">Resultado</th>
+                                <th class="column-title" style="width: 5%;">Unidade</th>
+                                {{#if Specification1}}
+                                <th class="column-title" style="width: 10%;">{{{Specification1.Identification}}}</th>
+                                {{/if}}
+                                {{#if Specification2}}
+                                <th class="column-title" style="width: 10%;">{{{Specification2.Identification}}}</th>
+                                {{/if}}
+                                {{#if Specification3}}
+                                <th class="column-title" style="width: 10%;">{{{Specification3.Identification}}}</th>
+                                {{/if}}
+                                <th class="column-title" style="width: 10%;">LQ</th>
+                                <th class="column-title" style="width: 15%;">Referência</th>
+                                <th class="column-title" style="width: 10%;">Data Análise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#Analyses}}
+                            {{#unless Surrogate}}
+                            <tr>
+                                <td style="text-align: center">{{{Identification}}}</td>
+                                <td style="text-align: center">{{{Result}}}</td>
+                                <td style="text-align: center">{{#if Unit}}{{{Unit}}}{{else}}-{{/if}}</td>
+                                {{#if ../Specification1}}
+                                <td style="text-align: center">{{#if Specification1Limit}}{{{Specification1Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                {{#if ../Specification2}}
+                                <td style="text-align: center">{{#if Specification2Limit}}{{{Specification2Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                {{#if ../Specification3}}
+                                <td style="text-align: center">{{#if Specification3Limit}}{{{Specification3Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                <td style="text-align: center">{{#if QuantificationLimit}}{{QuantificationLimit}}{{#if Info01}} - {{Info01}}{{/if}}{{else}}-{{/if}}</td>
+                                <td style="text-align: center">{{#if Method}}{{#if ReferenceMethod}}{{{ReferenceMethod}}}{{else}}-{{/if}}{{/if}}</td>
+                                <td style="text-align: center">{{#if Method}}{{#if Method.AnalyzeDateTime}}{{ToLocalDateTime Method.AnalyzeDateTime "dd/MM/yyyy"}}{{else}}-{{/if}}{{/if}}</td>
+                            </tr>
+                            {{/unless}}
+                            {{/Analyses}}
+                        </tbody>
+                    </table>
+                    {{/GeneralsThird}}
+                    {{/if}}
+
+                    {{#if ServiceCenterThirdAC}}
+                    {{#ServiceCenterThirdAC}}
+                    <br />
+                    <table class="table-analyses-results">
+                        <thead>
+                            <tr>
+                                <th class="table-title" colspan="9">
+                                    {{#if Identification}}Ensaios realizados em provedor externo - {{Identification}}{{else}}-{{/if}}
+                                    {{#if Accreditation}} - {{Accreditation}}{{/if}}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="column-title" style="width: 22%;">Análise</th>
+                                <th class="column-title" style="width: 10%;">Resultado</th>
+                                <th class="column-title" style="width: 5%;">Unidade</th>
+                                {{#if Specification1}}
+                                <th class="column-title" style="width: 10%;">{{{Specification1.Identification}}}</th>
+                                {{/if}}
+                                {{#if Specification2}}
+                                <th class="column-title" style="width: 10%;">{{{Specification2.Identification}}}</th>
+                                {{/if}}
+                                {{#if Specification3}}
+                                <th class="column-title" style="width: 10%;">{{{Specification3.Identification}}}</th>
+                                {{/if}}
+                                <th class="column-title" style="width: 10%;">LQ</th>
+                                <th class="column-title" style="width: 15%;">Referência</th>
+                                <th class="column-title" style="width: 10%;">Data Análise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#Analyses}}
+                            {{#unless Surrogate}}
+                            <tr>
+                                <td style="text-align: center">{{{Identification}}}</td>
+                                <td style="text-align: center">{{{Result}}}</td>
+                                <td style="text-align: center">{{#if Unit}}{{{Unit}}}{{else}}-{{/if}}</td>
+                                {{#if ../Specification1}}
+                                <td style="text-align: center">{{#if Specification1Limit}}{{{Specification1Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                {{#if ../Specification2}}
+                                <td style="text-align: center">{{#if Specification2Limit}}{{{Specification2Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                {{#if ../Specification3}}
+                                <td style="text-align: center">{{#if Specification3Limit}}{{{Specification3Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                <td style="text-align: center">{{#if QuantificationLimit}}{{QuantificationLimit}}{{#if Info01}} - {{Info01}}{{/if}}{{else}}-{{/if}}</td>
+                                <td style="text-align: center">{{#if Method}}{{#if ReferenceMethod}}{{{ReferenceMethod}}}{{else}}-{{/if}}{{/if}}</td>
+                                <td style="text-align: center">{{#if Method}}{{#if Method.AnalyzeDateTime}}{{ToLocalDateTime Method.AnalyzeDateTime "dd/MM/yyyy"}}{{else}}-{{/if}}{{/if}}</td>
+                            </tr>
+                            {{/unless}}
+                            {{/Analyses}}
+                        </tbody>
+                    </table>
+                    {{/ServiceCenterThirdAC}}
+                    {{/if}}
+
+                    {{#if ServiceCenterThird}}
+                    {{#ServiceCenterThird}}
+                    <br />
+                    <table class="table-analyses-results">
+                        <thead>
+                            <tr>
+                                <th class="table-title" colspan="9">
+                                    {{#if Identification}}Ensaios realizados em provedor externo - {{Identification}}{{else}}-{{/if}}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="column-title" style="width: 22%;">Análise</th>
+                                <th class="column-title" style="width: 10%;">Resultado</th>
+                                <th class="column-title" style="width: 5%;">Unidade</th>
+                                {{#if Specification1}}
+                                <th class="column-title" style="width: 10%;">{{{Specification1.Identification}}}</th>
+                                {{/if}}
+                                {{#if Specification2}}
+                                <th class="column-title" style="width: 10%;">{{{Specification2.Identification}}}</th>
+                                {{/if}}
+                                {{#if Specification3}}
+                                <th class="column-title" style="width: 10%;">{{{Specification3.Identification}}}</th>
+                                {{/if}}
+                                <th class="column-title" style="width: 10%;">LQ</th>
+                                <th class="column-title" style="width: 15%;">Referência</th>
+                                <th class="column-title" style="width: 10%;">Data Análise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#Analyses}}
+                            {{#unless Surrogate}}
+                            <tr>
+                                <td style="text-align: center">{{{Identification}}}</td>
+                                <td style="text-align: center">{{{Result}}}</td>
+                                <td style="text-align: center">{{#if Unit}}{{{Unit}}}{{else}}-{{/if}}</td>
+                                {{#if ../Specification1}}
+                                <td style="text-align: center">{{#if Specification1Limit}}{{{Specification1Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                {{#if ../Specification2}}
+                                <td style="text-align: center">{{#if Specification2Limit}}{{{Specification2Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                {{#if ../Specification3}}
+                                <td style="text-align: center">{{#if Specification3Limit}}{{{Specification3Limit}}}{{else}}-{{/if}}</td>{{/if}}
+                                <td style="text-align: center">{{#if QuantificationLimit}}{{QuantificationLimit}}{{#if Info01}} - {{Info01}}{{/if}}{{else}}-{{/if}}</td>
+                                <td style="text-align: center">{{#if Method}}{{#if ReferenceMethod}}{{{ReferenceMethod}}}{{else}}-{{/if}}{{/if}}</td>
+                                <td style="text-align: center">{{#if Method}}{{#if Method.AnalyzeDateTime}}{{ToLocalDateTime Method.AnalyzeDateTime "dd/MM/yyyy"}}{{else}}-{{/if}}{{/if}}</td>
+                            </tr>
+                            {{/unless}}
+                            {{/Analyses}}
+                        </tbody>
+                    </table>
+                    {{/ServiceCenterThird}}
+                    {{/if}}
+                    {{/Samples}}
+                    
+                    {{#if Specifications}}
+                    <br />
+                    <table>
+                        <tr>
+                            <th class="table-title">
+                                Especificações
+                            </th>
+                        </tr>
+                        {{#Specifications}}
+                        <tr>
+                            <td><span class="field-title">{{{Identification}}}:</span> {{{Description}}}</td>
+                        </tr>
+                        {{/Specifications}}
+                    </table>
+                    {{/if}}
+
+                    {{#if ConclusionMessages}}
+                    <br />
+                    <table>
+                        <tr>
+                            <th class="table-title">
+                                As opiniões e interpretações expressas abaixo não fazem parte do escopo da acreditação deste laboratório
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="table-title">
+                                Interpretações
+                            </th>
+                        </tr>
+                        {{#ConclusionMessages}}
+                        <tr>
+                            <td>{{{MessageHtml}}}</td>
+                        </tr>
+                        {{/ConclusionMessages}}
+                    </table>
+                    {{/if}}
+
+                    <br />
+                    <table style="">
+                        <tr>
+                            <th class="table-title">
+                                Notas
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{>AnalysesReportNotes}}
+                            </td>
+                        </tr>
+                    </table>
+
+                    {{#if AttachmentMessages}}
+                    {{#AttachmentMessages}}
+                    <br />
+                    <table>
+                        <tr>
+                            <th class="table-title">
+                                {{Subject}}
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>{{{MessageHtml}}}</td>
+                        </tr>
+                    </table>
+                    {{/AttachmentMessages}}
+                    {{/if}}
+
+                    {{#with ../this}}
+                    <br />
+                    <table class="signature" style="">
+                        <tr>
+                            <td style="width: 50%;">
+                                {{#if PublisherUser}}
+                                {{#if PublisherUser.SignatureBase64Image}}
+                                <img style="max-width: 160px; max-height: 50px;" src="data:image/png;base64,{{PublisherUser.SignatureBase64Image}}">
+                                {{/if}}
+                                {{/if}}
+                            </td>
+                            <td style="width: 50%;">
+                                {{#if TechnicalUser}}
+                                {{#if TechnicalUser.SignatureBase64Image}}
+                                <img style="max-width: 160px; max-height: 50px;" src="data:image/png;base64,{{TechnicalUser.SignatureBase64Image}}">
+                                {{/if}}
+                                {{/if}}
+                            </td>
+                        </tr>
+                        <tr align="center">
+                            <td style="width: 50%; font-weight: 600;">{{#if PublisherUser}}{{PublisherUser.Identification}}{{/if}}</td>
+                            <td style="width: 50%; font-weight: 600;">{{#if TechnicalUser}}{{TechnicalUser.Identification}}{{/if}}</td>
+                        </tr>
+                        <tr align="center">
+                            <td style="width: 50%;">
+                                {{#if PublisherUser}}
+                                {{>ResponsiblePublicationNote}}
+                                {{/if}}
+                            </td>
+                            <td style="width: 50%;">
+                                {{#if TechnicalUser}}
+                                {{>ResponsibleTechnicianNote}}
+                                {{/if}}
+                            </td>
+                        </tr>
+                    </table>
+                    {{/with}}
+                    {{/if}}
+                    {{/Accreditations}}
+                    {{/if}}
+                </section>
+            </section>
+        </body>
+    </html>
+</htmlcontent>
+</body>
+<footers>
+    <footer>
+        <id>Default</id>
+        <htmlcontent>
+            <div style="font-family: sans-serif;" align="center">
+                <footer>
+                    <table style="width: 100%; font-size: 8px; border-top: 1px solid #000000;">
+                        <tr>
+                            <td style="width: 15%;">{{>AnalysesReportFooter}}</td>
+                            <td style="width: 70%; text-align: center;">{{>LaboratoryAddress}}</td>
+                            <td style="width: 15%;" align="right">Pag.{CrtPage}/{PageCount}</td>
+                        </tr>
+                    </table>
+                </footer>
+            </div>
+        </htmlcontent>
+    </footer>
+</footers>
+</subdocument>
+    {{/if}}
+</document>
+{{/Globalization}}
