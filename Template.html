@@ -142,7 +142,7 @@
                     }
 
                     .table-analyses-results tbody td {
-                        
+                        page-break-inside: avoid;
                     }
 
                     .review, .review td {
@@ -597,7 +597,7 @@
                         {{/if}}
 
                         <br />
-                        <table style="">
+                        <table style="page-break-inside: avoid;">
                             <tr>
                                 <th class="table-title">
                                     Notas
@@ -628,7 +628,7 @@
 
                         {{#with ../this}}
                         <br />
-                        <table class="signature" style="">
+                        <table class="signature" style="page-break-inside: avoid;">
                             <tr>
                                 <td style="width: 50%;">
                                     {{#if PublisherUser}}
@@ -665,7 +665,7 @@
                         {{/with}}
 
                         <br />
-                        <table class="validation-hash" style=" width: 100%;">
+                        <table class="validation-hash" style="page-break-inside: avoid; width: 100%;">
                             <tr align="center">
                                 <td colspan="2" class="validation-hash">
                                     <span style="color:#000; font-weight:600; font-size:10px;">Chave de Validação: </span>{{#with ../this}}{{Hash}}{{/with}}
@@ -846,7 +846,7 @@
                 }
 
                 .table-analyses-results tbody td {
-                    
+                    page-break-inside: avoid;
                 }
 
                 .review, .review td {
@@ -1324,7 +1324,7 @@
                     {{/if}}
 
                     <br />
-                    <table style="">
+                    <table style="page-break-inside: avoid;">
                         <tr>
                             <th class="table-title">
                                 Notas
@@ -1355,7 +1355,7 @@
 
                     {{#with ../this}}
                     <br />
-                    <table class="signature" style="">
+                    <table class="signature" style="page-break-inside: avoid;">
                         <tr>
                             <td style="width: 50%;">
                                 {{#if PublisherUser}}
